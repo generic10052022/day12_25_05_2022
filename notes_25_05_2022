@@ -24,6 +24,51 @@ department VARCHAR2(25) CONSTRAINT employeedetails_dept_check CHECK (department 
 doj DATE DEFAULT sysdate,
 basic INTEGER CONSTRAINT employeedetails_basic_check CHECK ( basic > 2000)
 );
+OR
+
+CREATE TABLE employeedetails(
+id VARCHAR2(5)  PRIMARY KEY,
+firstname VARCHAR2(20) NOT NULL,
+middlename VARCHAR2(20),
+lastname VARCHAR2(20) NOT NULL,
+designation VARCHAR2(25) CHECK (designation IN('Mgr','Asstmgr','programmer')),
+department VARCHAR2(25)  CHECK (department IN('Sales','HR','Mkt','Development')),
+doj DATE DEFAULT sysdate,
+basic INTEGER CHECK( basic > 2000)
+);
+
+OR
+CREATE TABLE employeedetails(
+id VARCHAR2(5), 
+firstname VARCHAR2(20) CONSTRAINT employeedetails_fn_not_null NOT NULL, 
+middlename VARCHAR2(20),
+lastname VARCHAR2(20)  CONSTRAINT employeedetails_ln_not_null NOT NULL,
+designation VARCHAR2(25),
+department VARCHAR2(25), 
+doj DATE DEFAULT sysdate,
+basic INTEGER, 
+CONSTRAINT employeedetails_id_pk PRIMARY KEY(id),
+CONSTRAINT employeedetails_desig_check CHECK (designation IN('Mgr','Asstmgr','programmer')),
+CONSTRAINT employeedetails_dept_check CHECK (department IN('Sales','HR','Mkt','Development')),
+CONSTRAINT employeedetails_basic_check CHECK ( basic > 2000)
+);
+OR
+CREATE TABLE employeedetails(
+id VARCHAR2(5), 
+firstname VARCHAR2(20) NOT NULL, 
+middlename VARCHAR2(20),
+lastname VARCHAR2(20)  NOT NULL,
+designation VARCHAR2(25),
+department VARCHAR2(25), 
+doj DATE DEFAULT sysdate,
+basic INTEGER, 
+PRIMARY KEY(id),
+CHECK (designation IN('Mgr','Asstmgr','programmer')),
+CHECK (department IN('Sales','HR','Mkt','Development')),
+ CHECK ( basic > 2000)
+);
+
+
 
 Q Insert the first record with all the columns with value.
 
@@ -101,7 +146,9 @@ A SELECT min(salary) FROM employee
 Q display min and max salary paid to the employees.
 SELECT min(salary),max(salary) FROM employee;
 
-
+SELECT ename,salary
+FROM employee
+ORDER BY ename,salary
 ename  salary
 Ajay   30000
 Abhi   20000
@@ -109,6 +156,9 @@ Ajay   25000
 Rakesh 30000
 Suresh 10000
 
+SELECT ename,salary
+FROM employee
+ORDER BY ename ASC, salary DESC
 Abhi    20000
 Ajay    30000
 Ajay    25000
@@ -145,7 +195,7 @@ FROM employee;
 
 * Aggregate functions can be used without group by clause.
 * Aggregate functions are used mostly with group by clause.
----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 HAVING clause is used to give condition after grouping the data and with having we use aggregate
 functions ( sum,avg,max,min,count)
 Display the count of employees departmentwise where the count of employees are more than 10.
@@ -219,6 +269,13 @@ A Yes
 The following statement will be incorrect:
 SELECT designation,count(id)
     FROM employeedetails
+
+but the following will work
+SELECT count(id),max(salary),sum(salary)
+FROM employeedetails
+
+SELECT id,ename,desig,dept
+FROM employeedetails
 ------------------------------------------------------------------------------------------------------
 Whenever nested aggregate columns appear in the SELECT clause, GROUP BY clause should be mandatorily used.
 The below statement is incorrect
@@ -267,13 +324,13 @@ The following statement will be incorrect
    GROUP BY department
 
     500000
--------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
 * GROUP BY clause should not contain any aggregate columns
 The following statement will go wrong
  SELECT department,count(id)
     FROM employeedetails
     GROUP BY id
--------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
 Aliased name given for the column should not be used in GROUP BY clause
 
 The following SQL is incorrect:
@@ -291,5 +348,10 @@ The following statement will go incorrect
     HAVING count(name)>5
 --------------------------------------------------------------------------------------------
 select to_char(sldate,'Month') MONTH, count(*) NUMBER_SALE from sale group by to_char(sldate,'Month') order by  2 desc
+
+select to_char(sldate,'Month') MONTH, count(*) NUMBER_SALE from sale group by to_char(sldate,'Month') order by  count(*) desc
+OR
+select to_char(sldate,'Month') MONTH, count(*) NUMBER_SALE from sale group by to_char(sldate,'Month') order by  
+NUMBER_SALE desc;
 ---------------------------------------------------------------------------------------------------------------
  
