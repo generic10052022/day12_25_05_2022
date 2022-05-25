@@ -69,6 +69,13 @@ CHECK (department IN('Sales','HR','Mkt','Development')),
 );
 
 
+INSERT INTO employeedetails VALUES('E0001','Akash','Kumar','Sharma','Mgr','Sales','12-feb-2010',21000);
+INSERT INTO employeedetails VALUES('E0002','Rita',null,'Puri','Mgr','HR','15-mar-2011',20000);
+INSERT INTO employeedetails VALUES('E0003','ashok',null,'Nath','Asstmgr','Mkt','25-jul-2016',15000);
+INSERT INTO employeedetails VALUES('E0004','gita','Kumari','Chouhan','programmer','Development','25-oct-2019',10000);
+INSERT INTO employeedetails VALUES('E0005','Suresh',null,'Nath','Asstmgr','Mkt','13-nov-2020',14000);
+INSERT INTO employeedetails VALUES('E0006','Ranjan',null,'Madan','Asstmgr','Sales','25-dec-2017',16000);
+
 
 Q Insert the first record with all the columns with value.
 
