@@ -1,3 +1,7 @@
+SELECT AVG(Salary) AvgSalary, round(AVG(Bonus),2) AvgBonus1, SUM(Bonus) / Count(Bonus) AvgBonus2 
+FROM Employee
+
+
 
 Q Create the table named as employeedetails with the following attributes/fields
 
@@ -25,13 +29,13 @@ Q Insert the first record with all the columns with value.
 
 A INSERT INTO employeedetails VALUES('E0001','Akash','Kumar','Sharma','Mgr','Sales','12-feb-2010',10000);
 OR
-INSERT INTO employeedetails(id,firstname.middlename,lastname,designation,department,doj,basic) VALUES('E0001','Akash','Kumar','Sharma','Mgr','Sales','12-feb-2010',10000);
+INSERT INTO employeedetails(id,firstname,middlename,lastname,designation,department,doj,basic) VALUES('E0001','Akash','Kumar','Sharma','Mgr','Sales','12-feb-2010',10000);
 
 
 Q Insert the second record with middlename as null.
  INSERT INTO employeedetails VALUES('E0002','Ravi',null,'Chandran','Mgr','Mkt','16-Oct-2000',15000);
 OR
-INSERT INTO employeedetails(id,firstname.middlename,lastname,designation,department,doj,basic) VALUES('E0002','Ravi','Chandran','Mgr','Mkt','16-Oct-2000',15000);
+INSERT INTO employeedetails(id,firstname,lastname,designation,department,doj,basic) VALUES('E0002','Ravi','Chandran','Mgr','Mkt','16-Oct-2000',15000);
 
 Q Display id,firstname,basic for employee E0001.
 
@@ -96,6 +100,21 @@ Q display the minimum salary paid to the employees.
 A SELECT min(salary) FROM employee
 Q display min and max salary paid to the employees.
 SELECT min(salary),max(salary) FROM employee;
+
+
+ename  salary
+Ajay   30000
+Abhi   20000
+Ajay   25000
+Rakesh 30000
+Suresh 10000
+
+Abhi    20000
+Ajay    30000
+Ajay    25000
+Rakesh  30000
+Suresh  10000
+
 ---------------------------------------------------------------------------------------------------------------------------------
 /* The below SQL statement will sum up all the basics from all the rows and display */
 
