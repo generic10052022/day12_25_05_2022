@@ -1,0 +1,94 @@
+** Join (cross join and inner join)
+to fetch related data from multiple tables and generate result that has columns from these tables.
+
+it is not complusary to fetch data from all the columns in joined tables, data shall be fetched as per requirement
+
+while fetching data from common column of joined tables you have to prefix alias name of appropriate table with the column name as    table_alias_name.column_name
+
+
+** cross join
+
+each row in first table is fetched with each row in second table to form the resultset, so the result set contains total nXm records if one table has n records and another table has m records
+
+**inner join
+
+data from two tables based on join condition is fetched to form the resultset. 
+** syntax 
+select column list from table1 alias1 INNER JOIN table2 alias2 ON join condition
+
+column list - common column name should be prefixed with alias
+join condition - condition applied to common column 
+		alias1.column1=alias2.column1
+** example 
+select id,ename,e.compid emp_comp, c.compid, model from employee e INNER JOIN computer c on e.compid=c.compid
+
+********** scenario *********************
+
+** create tables as follows
+
+COURSE -> cid integer primary key, cname varchar 10, fees number 10,2
+CREATE TABLE COURSE (Cid INTEGER PRIMARY KEY, Cname VARCHAR2(10),Fee NUMBER(10,2))
+
+student ->  sid integer primary key,sname varchar 10,cid foreign key,city varchar2(10)
+CREATE TABLE STUDENT (Sid INTEGER PRIMARY KEY, Sname VARCHAR2(10),Cid INTEGER REFERENCES COURSE(Cid),city varchar2(10))
+
+** insert data into respective tables as follows
+COURSE		
+cid	cname	fees
+1	JAVA	50000
+2	RDBMS	30000
+3	NOSQL	25000
+
+INSERT INTO COURSE VALUES (1,'JAVA',50000);
+INSERT INTO COURSE VALUES (2,'RDBMS',30000);
+INSERT INTO COURSE VALUES (3,'NOSQL',25000);
+
+STUDENT		
+sid	sname	cid city
+101	James	1 Mumbai
+102	Priti	2 Chennai
+103	Harsha	1 Delhi
+104 	Amar 	1 Mumbai
+105	Divya	2 Chennai
+106	Sonam	1 Chennai
+107 	Ravi    2 Mumbai
+108 	James	3 Mumbai	
+
+INSERT INTO STUDENT VALUES (101,'James',1,'Mumbai');
+INSERT INTO STUDENT VALUES (102,'Priti',2,'Chennai');
+INSERT INTO STUDENT VALUES (103,'Harsha',1,'Delhi');
+INSERT INTO STUDENT VALUES (104,'amar',1,'Mumbai');
+INSERT INTO STUDENT VALUES (105,'Divya',2,'Chennai');
+INSERT INTO STUDENT VALUES (106,'Sonam',1,'Chennai');
+INSERT INTO STUDENT VALUES (107,'Ravi',2,'Mumbai');
+INSERT INTO STUDENT VALUES (108,'James',3,'Mumbai');
+
+** write queries 
+
+display student id, student name,course id, course name taken by each student
+select sid,sname,c.cid,cname from student s inner join course c on c.cid=s.cid
+
+display student id, student name, course name taken by each student for course JAVA 
+select sid,sname,cname from student s inner join course c on c.cid=s.cid where cname='JAVA'
+
+display coursename, no. of students for each course 
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid  group by cname
+
+display coursename, no. of students for course JAVA
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid    group by cname having cname='JAVA'
+OR
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid  where cname='JAVA' group by cname 
+ 
+display coursename, no. of students for each city 
+
+display coursename, no. of students for city Chennai
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid  where city='Chennai' group by cname
+
+display coursename, no. of students for course JAVA in Mumbai
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid  where city='Mumbai' group by cname  having cname='JAVA'
+
+display coursename, no. of students who has taken the course only if no.of students who has taken the course is more than 1
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid   group by cname  having count(sid)>1
+
+display coursename, no. of students who has taken the course only if no.of students who has taken the course is more than 1 in Mumbai
+select cname,count(sid) "no_of_students" from student s inner join course c on c.cid=s.cid  where city='Mumbai' group by cname  having count(sid)>1
